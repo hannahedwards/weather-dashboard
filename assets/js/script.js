@@ -5,7 +5,7 @@ var currentWeatherEl = document.querySelector('#currentWeather');
 var futureWeatherEL = document.querySelector('#futureWeather');
 var listEL = document.createElement("ol");
 
-var apiKey = "7758d981f759fb9e8753ab618d08f57d";
+var apiKey = "e486a7d8b0b54203d41c260f6ded5efd";
 var apiSearchURL = "https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={apiKey}";
 var searchCity;
 
