@@ -140,5 +140,3 @@ function saveHistoryToStorage(searchHistory) {
 };
 
 submitEL.addEventListener('click', submitWeatherSearch);
-
-init();
