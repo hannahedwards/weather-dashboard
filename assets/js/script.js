@@ -6,41 +6,40 @@ var apiKey = '7758d981f759fb9e8753ab618d08f57d';
 var search;
 
 function displayDay() {
-    var date = dayjs().format('MMMM DD YYYY');
-    return date;
+  var date = dayjs().format('MMMM DD YYYY');
+  return date;
 };
 
 var weatherSearch = function (event) {
-    event.preventDefault();
-    search = cityEL.value.trim();
-    if (search) {
-      coordinates(search);
-    } else {
-      window.alert('Oops! Enter city name please!');
-    }
-  };
+  event.preventDefault();
+  search = cityEL.value.trim();
+  if (search) {
+    coordinates(search);
+  } else {
+    window.alert('Oops! Enter city name please!');
+  }
+};
 
-function coordinates(city){
-    fetch("https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1&appid=" + apiKey)
-    .then(function(resp) { return resp.json() }) 
-    .then(function(data) {
-    weatherEl.innerHTML = '';
-    forcastEL.innerHTML = '';
-    fetchWeatherData(data[0].lat, data[0].lon);
-    fetchForcastData(data[0].lat, data[0].lon);
+function coordinates(city) {
+  fetch("https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1&appid=" + apiKey)
+    .then(function (resp) { return resp.json() })
+    .then(function (data) {
+      weatherEl.innerHTML = '';
+      forcastEL.innerHTML = '';
+      fetchWeatherData(data[0].lat, data[0].lon);
+      fetchForcastData(data[0].lat, data[0].lon);
     })
 };
 
-function fetchWeatherData(lat,lon){
-    fetch("https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=" + lat + "&lon=" + lon + "&appid=" + apiKey)
-    .then(function(resp) { return resp.json() }) 
-    .then(function(data) {
+function fetchWeatherData(lat, lon) {
+  fetch("https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=" + lat + "&lon=" + lon + "&appid=" + apiKey)
+    .then(function (resp) { return resp.json() })
+    .then(function (data) {
 
-      var todaysWeatherDivEL = document.createElement('div');
-      todaysWeatherDivEL.classList.add("box");
-      var todaysWeatherEL =document.createElement('h1');
-      todaysWeatherEL.textContent = search + " (" + displayDay() + ") ";      
-      
+      var weatherDivEL = document.createElement('div');
+      weatherDivEL.classList.add("box");
+      var todaysWeatherEL = document.createElement('h1');
+      todaysWeatherEL.textContent = search + " (" + displayDay() + ") ";
       var TempEL = document.createElement('p');
       var WindEL = document.createElement('p');
       var HumidityEL = document.createElement('p');
@@ -55,29 +54,27 @@ function fetchWeatherData(lat,lon){
     })
 };
 
-function fetchForcastData(lat,lon){
-    fetch("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperial&cnt=120")
-    .then(function(resp) { return resp.json() }) // Convert data to json
-    .then(function(data) {
+function fetchForcastData(lat, lon) {
+  fetch("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperial&cnt=120")
+    .then(function (resp) { return resp.json() })
+    .then(function (data) {
 
-      for (let i = 0; i < 120; i += 8){
+      for (let i = 0; i < 120; i += 8) {
 
-        var dailyWeatherDivEL = document.createElement('div');
-        dailyWeatherDivEL.classList.add("box");
-        var dailyWeatherEL = document.createElement('h1');
+        var forcastWeatherDivEL = document.createElement('div');
+        forcastWeatherDivEL.classList.add("box");
+        var forcastWeatherEL = document.createElement('h1');
+        forcastWeatherEL.textContent = dayjs(data.list[i].dt_txt).format('MMMM DD YYYY');
+        var forcastTempEL = document.createElement('p');
+        var forcastWindEL = document.createElement('p');
+        var forcastHumidityEL = document.createElement('p');
 
-        dailyWeatherEL.textContent = dayjs(data.list[i].dt_txt).format('MMMM DD YYYY');    
-
-        var dailyTempEL = document.createElement('p');
-        var dailyWindEL = document.createElement('p');
-        var dailyHumidityEL = document.createElement('p');
-        dailyTempEL.textContent = "Temp: " + data.list[i].main.temp + " °F";
-        dailyWindEL.textContent = "Wind: " + data.list[i].wind.speed + " mph";
-        dailyHumidityEL.textContent = "Humidity: " + data.list[i].main.humidity + " %";
-
-        forcastEL.append(dailyWeatherDivEL);
-        dailyWeatherDivEL.append(dailyWeatherEL,dailyTempEL,dailyWindEL,dailyHumidityEL);
-    };
+        forcastTempEL.textContent = "Temp: " + data.list[i].main.temp + " °F";
+        forcastWindEL.textContent = "Wind: " + data.list[i].wind.speed + " mph";
+        forcastHumidityEL.textContent = "Humidity: " + data.list[i].main.humidity + " %";
+        forcastEL.append(forcastWeatherDivEL);
+        forcastWeatherDivEL.append(forcastWeatherEL, forcastTempEL, forcastWindEL, forcastHumidityEL);
+      };
     })
 };
 
