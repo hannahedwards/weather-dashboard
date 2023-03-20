@@ -5,12 +5,12 @@ var forcastEL = document.querySelector('#forcast');
 var apiKey = '7758d981f759fb9e8753ab618d08f57d';
 var search;
 
-function displayDay() {
+function displayDay() {//shows the date at the top of the page
   var date = dayjs().format('MMMM DD YYYY');
   return date;
 };
 
-var weatherSearch = function (event) {
+var weatherSearch = function (event) { //checks your city input
   event.preventDefault();
   search = cityEL.value.trim();
   if (search) {
@@ -20,7 +20,7 @@ var weatherSearch = function (event) {
   }
 };
 
-function coordinates(city) {
+function coordinates(city) {//finds your cities weather
   fetch("https://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1&appid=" + apiKey)
     .then(function (resp) { return resp.json() })
     .then(function (data) {
@@ -31,7 +31,7 @@ function coordinates(city) {
     })
 };
 
-function fetchWeatherData(lat, lon) {
+function fetchWeatherData(lat, lon) {//creates your current day weather
   fetch("https://api.openweathermap.org/data/2.5/weather?units=imperial&lat=" + lat + "&lon=" + lon + "&appid=" + apiKey)
     .then(function (resp) { return resp.json() })
     .then(function (data) {
@@ -54,7 +54,7 @@ function fetchWeatherData(lat, lon) {
     })
 };
 
-function fetchForcastData(lat, lon) {
+function fetchForcastData(lat, lon) {//creates your 5 day forcast
   fetch("https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperial&cnt=120")
     .then(function (resp) { return resp.json() })
     .then(function (data) {
@@ -78,6 +78,6 @@ function fetchForcastData(lat, lon) {
     })
 };
 
-submitEL.addEventListener('click', weatherSearch);
+submitEL.addEventListener('click', weatherSearch);//triggers your function
 
 init();
